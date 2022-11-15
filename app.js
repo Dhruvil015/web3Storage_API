@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
 app.post("/storeFile", async (req, res, next) => {
   try {
     const obj = req.body;
-    const file_name = req.body.userAddress;
+    const file_name = req.body.general.address;
     const file = await makeFileObjects(obj, file_name);
     const cid = await storeFiles(file);
     res.send(cid);
