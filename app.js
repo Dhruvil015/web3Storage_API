@@ -41,11 +41,16 @@ app.get("/", (req, res) => {
 
 app.post("/storeFile", async (req, res, next) => {
   try {
-    const obj = req.body;
+    const userObj = req.body;
     const file_name = req.body.general.address;
-    const file = await makeFileObjects(obj, file_name);
+    const file = await makeFileObjects(userObj, file_name);
     const cid = await storeFiles(file);
-    res.send(cid);
+    const responseObj = {
+      address: file_name,
+      cid: cid,
+      url: `https://ipfs.io/ipfs/${cid}/${file_name}.json`,
+    };
+    res.send(responseObj);
   } catch (error) {
     next(error);
   }
@@ -55,7 +60,7 @@ app.use(notFound);
 app.use(errorConverter);
 app.use(errorHandler);
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
 const start = async () => {
   try {
