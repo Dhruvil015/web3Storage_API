@@ -23,10 +23,7 @@ const client = new Web3Storage({
 function makeFileObjects(obj, file_name) {
   const buffer = Buffer.from(JSON.stringify(obj));
 
-  const file = [
-    new File(["contents-of-file-1"], "plain-utf8.txt"),
-    new File([buffer], `${file_name}.json`),
-  ];
+  const file = [new File([buffer], `${file_name}.json`)];
   return file;
 }
 
@@ -50,7 +47,7 @@ app.post("/storeFile", async (req, res, next) => {
       cid: cid,
       url: `https://ipfs.io/ipfs/${cid}/${file_name}.json`,
     };
-    res.send(responseObj);
+    res.send(JSON.stringify(responseObj));
   } catch (error) {
     next(error);
   }
@@ -60,7 +57,7 @@ app.use(notFound);
 app.use(errorConverter);
 app.use(errorHandler);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 const start = async () => {
   try {
